@@ -65,3 +65,90 @@ lexus.accelerate();
 toyota.accelerate();
 toyota.brake();
 lexus.brake();
+
+//ES6 Classes
+
+//class expression
+
+// const PersonCL=class{
+
+// }
+
+//class decleartion
+class PersonCL{
+    constructor(fullName,birthYear){
+        this.fullName=fullName;
+        this.birthYear=birthYear;
+    }
+
+    calcAge(){
+        console.log(2037-this.birthYear);
+    }
+    //Set a property that already exists
+    set fullName(name){
+        if(name.includes(' '))this._fullName=name;
+        else{
+            alert(`${name} is not a full name`);
+        }
+    }
+    get fullName(){
+        return this._fullName;
+    }
+    //static method
+    static hey(){
+        console.log(`Hey there ${this.fullName}`)
+    }
+}
+
+const jessica=new PersonCL('jessica davis',1996);
+
+jessica.calcAge();
+
+//Setters and Getters
+
+const walter=new PersonCL('Walter White',1965);
+const account={
+    owner:'Jonas',
+    movements:[200,530,120,300],
+
+    get latest(){
+        //return last element in movement array
+        return this.movements.slice(-1).pop();
+    },
+    set latest(mov){
+        this.movements.push(mov);
+    }
+};
+
+account.latest=50;
+
+
+PersonCL.hey=function(){
+    console.log('Hey there');
+}
+PersonCL.hey();
+
+
+//Object Create
+const PersonProto={
+    calcAge(){
+        console.log(2037-this.birthYear);
+    },
+    //this is not a constructor method b/c
+    //we did not use the 'new' operator
+    init(firstName,birthYear){
+        this.firstName=firstName;
+        this.birthYear=birthYear;
+    },
+};
+
+//The line below creates an empty object that is linked
+//to the PersonProto prototype
+const steven=Object.create(PersonProto);
+steven.name='Steven';
+steven.birthYear=2002;
+steven.calcAge();
+
+const sarah=Object.create(PersonProto);
+sarah.init('Sarah',1979);
+sarah.calcAge();
