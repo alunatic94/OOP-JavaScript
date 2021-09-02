@@ -1,40 +1,154 @@
 'use strict';
+
 /*      Constructors        */
-const Person=function(firstName,birthYear){
-    this.firstName=firstName;
-    this.birthYear=birthYear;
+
+// const Person=function(firstName,birthYear){
+//     this.firstName=firstName;
+//     this.birthYear=birthYear;
+// }
+
+// const jonas=new Person('Jonas,1991');
+
+
+// /*      Prototypes        */
+// Person.prototype.calcAge=function(){
+//     console.log(2037-this.birthYear);
+// }
+
+// jonas.calcAge();
+// //Person.prototype is the prototype of jonas
+// console.log(jonas.__proto__);
+// console.log(jonas.__proto__ === Person.prototype);
+// console.log(Person.prototype.isPrototypeOf(jonas));
+
+// Person.prototype.species='Homo Sapiends';
+
+// /*      Prototype Inheritance and Chain        */
+
+// console.log(jonas.__proto__);//prototype of Jonas Object
+// console.log(jonas.__proto__.__proto__);//prototype 
+
+// console.dir(Person.prototype.constructor);//dir gives actual object
+
+// const arr=[3,6,4,5,6,9,3,9,6];
+// console.log(arr.__proto__);
+// console.log(arr.__proto__===Array.prototype);//true
+
+// console.log(arr.__proto__.__proto__);//this should be the Array Object
+// Array.prototype.unique=function(){
+//     [...new Set(this)];
+// };
+
+// console.log(arr.unique());
+
+
+//CODING CHALLENGE #1
+
+const car=function(make,speed){
+    this.speed=speed;
+    this.make=make;
 }
 
-const jonas=new Person('Jonas,1991');
 
-
-/*      Prototypes        */
-Person.prototype.calcAge=function(){
-    console.log(2037-this.birthYear);
+car.prototype.accelerate=function(){
+    this.speed+=10;
+    console.log(`${this.speed}`);
+}
+car.prototype.brake=function(){
+    this.speed-=5;
+    console.log(`${this.speed}`);
 }
 
-jonas.calcAge();
-//Person.prototype is the prototype of jonas
-console.log(jonas.__proto__);
-console.log(jonas.__proto__ === Person.prototype);
-console.log(Person.prototype.isPrototypeOf(jonas));
+const lexus=new car('lexus',30);
+const toyota=new car('toyota',50);
+lexus.accelerate();
+toyota.accelerate();
+toyota.brake();
+lexus.brake();
 
-Person.prototype.species='Homo Sapiends';
+//ES6 Classes
 
-/*      Prototype Inheritance and Chain        */
+//class expression
 
-console.log(jonas.__proto__);//prototype of Jonas Object
-console.log(jonas.__proto__.__proto__);//prototype 
+// const PersonCL=class{
 
-console.dir(Person.prototype.constructor);//dir gives actual object
+// }
 
-const arr=[3,6,4,5,6,9,3,9,6];
-console.log(arr.__proto__);
-console.log(arr.__proto__===Array.prototype);//true
+//class decleartion
+class PersonCL{
+    constructor(fullName,birthYear){
+        this.fullName=fullName;
+        this.birthYear=birthYear;
+    }
 
-console.log(arr.__proto__.__proto__);//this should be the Array Object
-Array.prototype.unique=function(){
-    [...new Set(this)];
+    calcAge(){
+        console.log(2037-this.birthYear);
+    }
+    //Set a property that already exists
+    set fullName(name){
+        if(name.includes(' '))this._fullName=name;
+        else{
+            alert(`${name} is not a full name`);
+        }
+    }
+    get fullName(){
+        return this._fullName;
+    }
+    //static method
+    static hey(){
+        console.log(`Hey there ${this.fullName}`)
+    }
+}
+
+const jessica=new PersonCL('jessica davis',1996);
+
+jessica.calcAge();
+
+//Setters and Getters
+
+const walter=new PersonCL('Walter White',1965);
+const account={
+    owner:'Jonas',
+    movements:[200,530,120,300],
+
+    get latest(){
+        //return last element in movement array
+        return this.movements.slice(-1).pop();
+    },
+    set latest(mov){
+        this.movements.push(mov);
+    }
 };
 
-console.log(arr.unique());
+account.latest=50;
+
+
+PersonCL.hey=function(){
+    console.log('Hey there');
+}
+PersonCL.hey();
+
+
+//Object Create
+const PersonProto={
+    calcAge(){
+        console.log(2037-this.birthYear);
+    },
+    //this is not a constructor method b/c
+    //we did not use the 'new' operator
+    init(firstName,birthYear){
+        this.firstName=firstName;
+        this.birthYear=birthYear;
+    },
+};
+
+//The line below creates an empty object that is linked
+//to the PersonProto prototype
+const steven=Object.create(PersonProto);
+steven.name='Steven';
+steven.birthYear=2002;
+steven.calcAge();
+
+const sarah=Object.create(PersonProto);
+sarah.init('Sarah',1979);
+sarah.calcAge();
