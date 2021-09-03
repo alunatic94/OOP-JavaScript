@@ -155,32 +155,59 @@ sarah.calcAge();
 
 //Coding challenge #2
 
- class car {
-    constructor(make, speed) {
-        this.speed = speed;
-        this.make = make;
-    }
-    accelerate(){
-        this.speed+=10;
-        console.log(`${this.make} is going ${this.speed} km/h`);
-    }
-    brake(){
-        this.speed-=5;
-        console.log(`${this.make} is going ${this.speed} km/h`);
-    }
-    get speedUS(){
-        return this.speed/1.6;
-    }
-    set speedUS(speed){
-        this.speed=speed*1.6;
-    }
+//  class car {
+//     constructor(make, speed) {
+//         this.speed = speed;
+//         this.make = make;
+//     }
+//     accelerate(){
+//         this.speed+=10;
+//         console.log(`${this.make} is going ${this.speed} km/h`);
+//     }
+//     brake(){
+//         this.speed-=5;
+//         console.log(`${this.make} is going ${this.speed} km/h`);
+//     }
+//     get speedUS(){
+//         return this.speed/1.6;
+//     }
+//     set speedUS(speed){
+//         this.speed=speed*1.6;
+//     }
+// }
+
+// const ford=new car('ford',120);
+
+// console.log(ford.speedUS);
+// ford.accelerate();
+// ford.accelerate();
+// ford.brake();
+// ford.speedUS=50;
+// console.log(ford);
+
+//Inheritance between classes
+
+const Person=function(firstName,birthYear){
+    this.firstName=firstName;
+    this.birthYear=birthYear;
+};
+
+Person.prototype.calcAge=function(){
+    console.log(2037-this.birthYear);
 }
 
-const ford=new car('ford',120);
+const Student=function(firstName,birthYear,course){
+    Person.call(this,firstName,birthYear)
+    this.course=course;
+};
 
-console.log(ford.speedUS);
-ford.accelerate();
-ford.accelerate();
-ford.brake();
-ford.speedUS=50;
-console.log(ford);
+//Following line:the student.prototype object is now an object
+//that inherits from person.prototype. Linking prototypes
+Student.prototype=Object.create(Person.prototype)
+Student.prototype.introduce=function(){
+    console.log(`My name is ${this.firstName} and I study ${this.course}`);
+}
+
+const mike=new Student('Mike',2020,'Computer Science');
+mike.introduce();
+mike.calcAge();
