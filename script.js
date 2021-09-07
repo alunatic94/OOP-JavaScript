@@ -154,29 +154,32 @@ sarah.init('Sarah',1979);
 sarah.calcAge();
 
 //Coding challenge #2
-
-//  class car {
+// const Car=function(make,speed){
+//     this.make=make;
+//     this.speed=speed;
+// };
+//   class car {
 //     constructor(make, speed) {
 //         this.speed = speed;
 //         this.make = make;
 //     }
-//     accelerate(){
+//      accelerate(){
 //         this.speed+=10;
 //         console.log(`${this.make} is going ${this.speed} km/h`);
-//     }
-//     brake(){
+//      }
+//      brake(){
 //         this.speed-=5;
 //         console.log(`${this.make} is going ${this.speed} km/h`);
-//     }
-//     get speedUS(){
+//      }
+//      get speedUS(){
 //         return this.speed/1.6;
-//     }
-//     set speedUS(speed){
+//      }
+//      set speedUS(speed){
 //         this.speed=speed*1.6;
 //     }
 // }
 
-// const ford=new car('ford',120);
+ //const ford=new car('ford',120);
 
 // console.log(ford.speedUS);
 // ford.accelerate();
@@ -211,3 +214,37 @@ Student.prototype.introduce=function(){
 const mike=new Student('Mike',2020,'Computer Science');
 mike.introduce();
 mike.calcAge();
+
+//Challenge #3
+const car=function(make,speed){
+    this.speed=speed;
+    this.make=make;
+}
+
+
+ car.prototype.accelerate=function(){
+    this.speed+=10;
+    console.log(`${this.speed}`);
+ }
+ car.prototype.brake=function(){
+    this.speed-=5;
+    console.log(`${this.speed}`);
+ }
+const EV=function(make,speed,charge){
+    car.call(this,make,speed);
+    this.charge=charge;
+}
+//Link the prototypes
+EV.prototype=Object.create(car.prototype);
+
+EV.prototype.chargeBattery=function(chargeTo){
+    this.charge=chargeTo;
+}
+
+EV.prototype.accelerate=function(){
+    this.speed+=20;
+    this.charge-=1;
+    console.log(`${this.make} going at ${this.speed} with a charge of ${this.charge}`)
+}
+const bmw= new EV('bmw',50,25);
+console.log(bmw)
