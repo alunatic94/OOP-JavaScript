@@ -203,17 +203,34 @@ const Student=function(firstName,birthYear,course){
     Person.call(this,firstName,birthYear)
     this.course=course;
 };
-
+class StudentCL extends PersonCL{
+    constructor(fullName,birthYear,course){
+        //super constructor always has to be called first
+        super(fullName,birthYear);
+        this.course=course;
+    }
+    introduce(){
+        console.log(`My name is ${this.fullName} and I study ${this.course}`);
+    }
+    //This calcAge method overwrites the calcAge method from parent class
+    calcAge(){
+        console.log(`I am ${2037-this.birthYear} years old but feel older`)
+    }
+}
+const martha=new StudentCL('Martha Jones',2021,'Computer Science');
+martha.introduce();
+martha.calcAge();
+console.log(martha);
 //Following line:the student.prototype object is now an object
 //that inherits from person.prototype. Linking prototypes
 Student.prototype=Object.create(Person.prototype)
-Student.prototype.introduce=function(){
-    console.log(`My name is ${this.firstName} and I study ${this.course}`);
-}
+// Student.prototype.introduce=function(){
+//     console.log(`My name is ${this.firstName} and I study ${this.course}`);
+// }
 
-const mike=new Student('Mike',2020,'Computer Science');
-mike.introduce();
-mike.calcAge();
+// const mike=new Student('Mike',2020,'Computer Science');
+// mike.introduce();
+// mike.calcAge();
 
 //Challenge #3
 const car=function(make,speed){
