@@ -145,6 +145,19 @@ const PersonProto={
 //The line below creates an empty object that is linked
 //to the PersonProto prototype
 const steven=Object.create(PersonProto);
+
+//Inheritance through Object.create
+const StudentProto=Object.create(PersonProto);
+StudentProto.init=function(firstName,birthYear,course){
+    PersonProto.init.call(this,firstName,birthYear);
+    this.course=course;
+}
+StudentProto.introduce=function(){
+    console.log(`My name is ${this.fullName} and I study ${this.course}`);
+}
+const jay=Object.create(StudentProto);
+jay.init('Jay',2010,'Computer Science');
+jay.introduce();
 steven.name='Steven';
 steven.birthYear=2002;
 steven.calcAge();
@@ -265,3 +278,94 @@ EV.prototype.accelerate=function(){
 }
 const bmw= new EV('bmw',50,25);
 console.log(bmw)
+
+
+//Public fields
+//Private fields
+//Public methods
+//Private methods
+class Account{
+    //Public fields(only occur in the instances and dont show up in proto)
+    locale=navigator.language;
+    //Private fields
+    #movements=[];
+    #pin;
+    constructor(owner,currency,pin){
+        this.owner=owner;
+        this.currency=currency;
+        //._pin is a Protected property
+        this.#pin=pin;
+        //._movements is a Protected property
+        //this.#movements=[];
+        this.locale=navigator.language;
+    }
+    getMovements(){
+        return this.#movements;
+    }
+    getPin(){
+        return this._pin;
+    }
+//This is the public interface ofthe object
+    deposit(val){
+        this.#movements.push(val);
+        return this;
+    }
+    withdraw(val){
+        this.deposit(-val);
+        return this;
+    }
+    //Protecting the _approveLoan method
+    _approveLoan(val){
+        return true;
+    }
+    requestLoan(val){
+        if(this._approveLoan(val)){
+            this.deposit(val);
+            console.log(`Loan approved!`);
+            return this;
+        }
+    }
+    //Private methods as of right now are not supported
+    //by google chrome
+}
+
+const acc1=new Account('Jonas','EUR',1111);
+acc1.deposit(250);
+acc1.withdraw(140);
+
+//Method chaining
+acc1.deposit(300).deposit(500).withdraw(35).requestLoan(250000).withdraw(4000);
+console.log(acc1.getMovements())
+
+//Challenge #4
+class CarCL{
+    constructor(make,speed){
+        this.make=make;
+        this.speed=speed;
+    }
+    accelerate(){
+        this.speed+=10;
+        console.log(`Speed is now ${this.speed}`);
+        return this;
+    }
+    brake(){
+        this.speed-=5;
+        console.log(`Speed is now ${this.speed}`);
+        return this;
+    }
+}
+class EVCL extends CarCL{
+    #charge;
+    constructor(make,speed,charge){
+        super(make,speed);
+        this.#charge=charge;
+    }
+    chargeBattery(){
+        this.#charge+=1;
+        console.log(`Charge:${this.#charge}`);
+        return this;
+    }
+}
+const Lexus = new EVCL('lexus',35,75);
+console.log(Lexus);
+Lexus.accelerate().brake().chargeBattery();
