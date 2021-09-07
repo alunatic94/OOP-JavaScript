@@ -278,3 +278,61 @@ EV.prototype.accelerate=function(){
 }
 const bmw= new EV('bmw',50,25);
 console.log(bmw)
+
+
+//Public fields
+//Private fields
+//Public methods
+//Private methods
+class Account{
+    //Public fields(only occur in the instances and dont show up in proto)
+    locale=navigator.language;
+    //Private fields
+    #movements=[];
+    #pin;
+    constructor(owner,currency,pin){
+        this.owner=owner;
+        this.currency=currency;
+        //._pin is a Protected property
+        this.#pin=pin;
+        //._movements is a Protected property
+        //this.#movements=[];
+        this.locale=navigator.language;
+    }
+    getMovements(){
+        return this.#movements;
+    }
+    getPin(){
+        return this._pin;
+    }
+//This is the public interface ofthe object
+    deposit(val){
+        this.#movements.push(val);
+        return this;
+    }
+    withdraw(val){
+        this.deposit(-val);
+        return this;
+    }
+    //Protecting the _approveLoan method
+    _approveLoan(val){
+        return true;
+    }
+    requestLoan(val){
+        if(this._approveLoan(val)){
+            this.deposit(val);
+            console.log(`Loan approved!`);
+            return this;
+        }
+    }
+    //Private methods as of right now are not supported
+    //by google chrome
+}
+
+const acc1=new Account('Jonas','EUR',1111);
+acc1.deposit(250);
+acc1.withdraw(140);
+
+//Method chaining
+acc1.deposit(300).deposit(500).withdraw(35).requestLoan(250000).withdraw(4000);
+console.log(acc1.getMovements())
