@@ -336,3 +336,36 @@ acc1.withdraw(140);
 //Method chaining
 acc1.deposit(300).deposit(500).withdraw(35).requestLoan(250000).withdraw(4000);
 console.log(acc1.getMovements())
+
+//Challenge #4
+class CarCL{
+    constructor(make,speed){
+        this.make=make;
+        this.speed=speed;
+    }
+    accelerate(){
+        this.speed+=10;
+        console.log(`Speed is now ${this.speed}`);
+        return this;
+    }
+    brake(){
+        this.speed-=5;
+        console.log(`Speed is now ${this.speed}`);
+        return this;
+    }
+}
+class EVCL extends CarCL{
+    #charge;
+    constructor(make,speed,charge){
+        super(make,speed);
+        this.#charge=charge;
+    }
+    chargeBattery(){
+        this.#charge+=1;
+        console.log(`Charge:${this.#charge}`);
+        return this;
+    }
+}
+const Lexus = new EVCL('lexus',35,75);
+console.log(Lexus);
+Lexus.accelerate().brake().chargeBattery();
